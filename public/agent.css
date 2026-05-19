@@ -1,0 +1,144 @@
+/* style.css */
+:root {
+    --primary-blue: #2563eb;
+    --bg-gray: #f4f5f6;
+    --text-main: #a4a4a4;
+    --border-color: #d5d5d5;
+    --row-hover: #ff0000;
+    --danger-bg: #fde8e8; /* พื้นหลังแถวสีแดงอ่อน สำหรับ Disconnected */
+    --status-active: #22c55e; /* สีเขียว */
+    --status-disconnected: #ef4444; /* สีแดง */
+}
+
+body {
+    background-color: var(--bg-gray);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-main);
+}
+
+/* Navbar */
+.navbar-brand { font-weight: bold; font-size: 1.25rem; }
+.badge-endpoints {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+/* Charts Section */
+.chart-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.chart-title {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 2px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* Table Section */
+.table-container {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+.search-bar {
+    background-color: #f9fafb;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Table Styles */
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+th { text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--border-color); color: #4b5563; }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+
+/* จุดสถานะและแถว Disconnected อ้างอิงจากภาพต้นแบบ */
+.status-dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.status-active { background-color: var(--status-active); }
+.status-disconnected { background-color: var(--status-disconnected); }
+
+.row-disconnected {
+    background-color: var(--danger-bg) !important;
+}
+.group-badge {
+    background-color: #f3f4f6;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+
+/* ปุ่มmore */
+    /* ทำให้เมนูที่ยังไม่ได้เลือกดูเหมือนกดไม่ได้ */
+.menu-item.disabled {
+    color: #9ca3af !important; /* text-gray-400 */
+    pointer-events: none;      /* ห้ามคลิก */
+    opacity: 0.6;
+}
+
+/* เพิ่มเติมเพื่อให้สมบูรณ์ขึ้น */
+.menu-item {
+    transition: all 0.2s ease; /* เพิ่มความนุ่มนวลเวลาเปลี่ยนสถานะ */
+}
+
+/* ตรวจสอบว่าเมนู More อยู่เหนือตารางเสมอ */
+#moreMenu {
+    z-index: 100;
+    transition: all 0.15s ease;
+}
+#moreBtn.active {
+    color: #2563eb;
+}
+
+/* เพิ่ม Style ให้กับหัวตารางที่มี Checkbox (Select All) */
+th input[type="checkbox"], 
+td input[type="checkbox"] {
+    cursor: pointer;
+}
+#moreBtn {
+    cursor: pointer;
+}
+#moreMenu {
+    z-index: 100;
+    transition: all 0.15s ease;
+    transform-origin: top right;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ef4444; /* สีแดงเดิมตามภาพ */
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none; /* ลบเส้นใต้ของลิงก์ */
+    font-weight: 500;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+/* เอฟเฟกต์ตอนเอาเมาส์ไปวาง */
+.back-btn:hover {
+    background-color: #dc2626; /* สีแดงจะเข้มขึ้นเล็กน้อยเวลาชี้ */
+    color: #ffffff;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wazuh - Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="screen">
+        <div class="circle-bg">
+            <div class="shield-icon">🛡️</div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="header">
+                <h1 class="logo">wazuh<span class="dot">.</span></h1>
+                <p class="tagline">The Open Source Security Platform</p>
+            </div>
+
+            <form id="loginForm" class="login-box">
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <span id="togglePassword" class="eye-icon"></span>
+                </div>
+
+                <div id="errorText" class="error-text"></div>
+
+                <button type="submit" class="login-button">Log in</button>
+            </form>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>

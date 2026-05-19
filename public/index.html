@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wazuh Overview Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="overview.css" />
+</head>
+<body>
+
+<!-- ══ LOADING OVERLAY ══ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">กำลังโหลดข้อมูลจาก Wazuh...</div>
+</div>
+
+<!-- ══ TOP BAR ══ -->
+<div class="top-bar">
+  <div class="logo">W<span class="dot">.</span></div>
+  <div class="top-bar-spacer"></div>
+  <div class="api-container">
+    <div class="api-badge" id="apiBtn">
+      <span id="apiDefault">default</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div id="apiMenu" class="api-dropdown-content">
+      <a href="#" onclick="changeAPI('default')">default</a>
+    </div>
+  </div>
+  <div class="avatar">AD</div>
+  <div class="help-btn">?</div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+
+  <!-- Error banner -->
+  <div class="error-banner" id="errorBanner">
+    ⚠️ <span id="errorMsg">ไม่สามารถเชื่อมต่อ Proxy ได้ กำลังแสดงข้อมูลตัวอย่าง</span>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title">Overview</div>
+  </div>
+
+  <!-- ── STATS ROW ── -->
+  <div class="stats-row">
+
+    <!-- Risk Score -->
+    <div class="stat-card">
+      <div class="card-header">
+        <span class="card-icon">📋</span>
+        <span class="card-title">Risk Score</span>
+      </div>
+      <div class="big-num" style="color:#d69e2e;" id="riskScore">87<span style="font-size:18px;color:var(--muted)">/100</span></div>
+      <div class="delta" id="riskDelta">รายการเพิ่มใหม่ : +6</div>
+      <div class="sparkline-wrap">
+        <canvas id="sparkRisk"></canvas>
+      </div>
+    </div>
+
+    <!-- Agents Summary -->
+    <div class="stat-card clickable" onclick="window.location.href='agent.html'">
+      <div class="card-header">
+        <span class="card-icon">🖥️</span>
+        <span class="card-title">Agents Summary</span>
+      </div>
+      <div class="donut-wrap">
+        <canvas id="donutAgents" class="donut-canvas" width="90" height="90"></canvas>
+        <div class="donut-legend">
+          <div class="leg-item" style="cursor: pointer;" onclick="event.stopPropagation(); window.location.href='agent.html?status=active'">
+            <div class="leg-dot" style="background:#4c6ef5"></div>
+            <span class="hover-text">Active (<span id="activeCount">–</span>)</span>
+          </div>
+          <div class="leg-item" style="cursor: pointer;" onclick="event.stopPropagation(); window.location.href='agent.html?status=disconnected'">
+            <div class="leg-dot" style="background:#e53e3e"></div>
+            <span class="hover-text">Disconnected (<span id="disconnCount">–</span>)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Critical Alerts -->
+    <div class="stat-card">
+      <div class="card-header">
+        <span class="card-icon">🛡️</span>
+        <span class="card-title">Critical Alerts</span>
+      </div>
+      <div class="big-num" style="color:var(--red)" id="critCount">–</div>
+      <div class="sub-label">รายการ</div>
+      <div class="delta" id="critDelta">รายการเพิ่มใหม่ : +0</div>
+      <div class="sparkline-wrap">
+        <canvas id="sparkCrit"></canvas>
+      </div>
+    </div>
+
+    <!-- Total Events -->
+    <div class="stat-card">
+      <div class="card-header">
+        <span class="card-icon">📊</span>
+        <span class="card-title">Total Events (24 hours)</span>
+      </div>
+      <div class="big-num" id="totalEvents">–</div>
+      <div class="sub-label">รายการ</div>
+      <div class="delta" id="totalDelta">กำลังคำนวณ...</div>
+      <div class="sparkline-wrap">
+        <canvas id="sparkTotal"></canvas>
+      </div>
+    </div>
+
+  </div><!-- /stats-row -->
+
+  <!-- ── MIDDLE ROW ── -->
+  <div class="middle-row">
+
+    <!-- Latest Alerts Table -->
+    <div class="alerts-card">
+      <div class="section-header">
+        <span class="sec-icon">🔔</span>
+        <span class="sec-title">Latest Alerts</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 140px;">Timestamp</th>
+            <th style="width: 50px;">Level</th>
+            <th style="width: 70px;">rule.id</th>
+            <th>Description</th>
+            <th style="width: 90px;">Agent Name</th>
+            <th style="width: 60px;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="alertsBody">
+          <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">กำลังโหลด...</td></tr>
+        </tbody>
+      </table>
+      <div class="view-all-row">
+        <a class="view-all-btn" href="https://172.15.0.38/app/wazuh#/alerts" target="_blank">View Details in Wazuh</a>
+      </div>
+    </div>
+
+    <!-- 24h Severity -->
+    <div class="severity-card">
+      <div class="section-header">
+        <span class="sec-icon">⏱️</span>
+        <span class="sec-title">Last 24 Hours Alerts</span>
+      </div>
+      <div class="sev-grid">
+        <div class="sev-box sev-crit">
+          <div class="sev-label">Critical Severity</div>
+          <div class="sev-num" id="sevCrit">–</div>
+          <div class="sev-sub">Rule level 15 or higher</div>
+        </div>
+        <div class="sev-box sev-high">
+          <div class="sev-label">High Severity</div>
+          <div class="sev-num" id="sevHigh">–</div>
+          <div class="sev-sub">Rule level 12 To 14</div>
+        </div>
+        <div class="sev-box sev-med">
+          <div class="sev-label">Medium Severity</div>
+          <div class="sev-num" id="sevMed">–</div>
+          <div class="sev-sub">Rule level 7 To 11</div>
+        </div>
+        <div class="sev-box sev-low">
+          <div class="sev-label">Low Severity</div>
+          <div class="sev-num" id="sevLow">–</div>
+          <div class="sev-sub">Rule level 0 To 6</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /middle-row -->
+
+  <!-- ── BOTTOM ROW - 3 CARDS เหมือน Wazuh จริง ── -->
+  <div class="bottom-row">
+
+    <!-- ⚠️ CARD 1: Top 5 Alert Types -->
+    <div class="bottom-card">
+      <div class="section-header">
+        <span class="sec-icon">⚠️</span>
+        <span class="sec-title">Top 5 Alert Types</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="pieAlertTypes" width="120" height="120"></canvas>
+        </div>
+        <div class="legend-container" id="alertTypesLegend">
+          <div class="loading">กำลังโหลด...</div>
+        </div>
+      </div>
+      <div class="view-all-row">
+        <a class="view-all-btn" href="https://172.15.0.38/app/wazuh#/alerts" target="_blank">View Details in Wazuh</a>
+      </div>
+    </div>
+
+    <!-- 🎯 CARD 2: Top 10 MITRE ATT&CKS -->
+    <div class="bottom-card">
+      <div class="section-header">
+        <span class="sec-icon">🎯</span>
+        <span class="sec-title">Top 10 MITRE ATT&CKS</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="pieMitre" width="120" height="120"></canvas>
+        </div>
+        <div class="legend-container" id="mitreList">
+          <div class="loading">กำลังโหลด...</div>
+        </div>
+      </div>
+      <div class="view-all-row">
+        <a class="view-all-btn" href="https://172.15.0.38/app/wazuh#/overview?tab=mitre" target="_blank">View Details in Wazuh</a>
+      </div>
+    </div>
+
+    <!-- 🖥️ CARD 3: Top 5 Agents (LIST ไม่ใช่ DONUT) -->
+    <div class="bottom-card">
+      <div class="section-header">
+        <span class="sec-icon">🖥️</span>
+        <span class="sec-title">Top 5 Agents</span>
+        <div style="flex:1"></div>
+        <span style="font-size:10px;color:var(--muted);font-weight:600">Events</span>
+      </div>
+      <div class="card-body-list">
+        <ul class="agents-list" id="agentsList">
+          <li class="loading">กำลังโหลด...</li>
+        </ul>
+      </div>
+      <div class="view-all-row">
+        <a class="view-all-btn" href="https://172.15.0.38/app/wazuh#/agents" target="_blank">View Details in Wazuh</a>
+      </div>
+    </div>
+
+  </div><!-- /bottom-row -->
+
+</div><!-- /main -->
+
+<!-- Chart.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<!-- Dashboard logic -->
+<script src="overview.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    background-color: #2D7FF3;
+    position: relative;
+}
+
+.circle-bg {
+    position: absolute;
+    right: -25%;
+    width: 750px;
+    height: 750px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.shield-icon {
+    font-size: 180px;
+    color: #2D7FF3;
+    margin-right: 150px;
+}
+
+.content-wrapper {
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15%;
+}
+
+.header {
+    margin-bottom: 40px;
+}
+
+.logo {
+    font-size: 90px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.dot {
+    color: #000000;
+}
+
+.tagline {
+    font-size: 22px;
+    color: white;
+    margin-top: 20px;
+    font-weight: 400;
+}
+
+.login-box {
+    background-color: white;
+    padding: 35px;
+    border-radius: 4px;
+    width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #E2E8F0;
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #F8FAFC;
+    position: relative;
+}
+
+.input-icon {
+    margin-right: 12px;
+    font-size: 20px;
+    color: #718096;
+}
+
+input {
+    border: none;
+    outline: none;
+    width: 100%;
+    background-color: transparent;
+    font-size: 16px;
+    padding-right: 35px; /* 👈 เพิ่มตรงนี้ เพื่อกันไม่ให้ตัวหนังสือทับตา */
+    box-sizing: border-box; /* 👈 เพิ่มตรงนี้เพื่อให้ padding ไม่ทำให้ขนาด input เพี้ยน */
+}
+
+.eye-icon {
+    position: absolute;
+    right: 12px;        /* 👈 ปรับระยะห่างจากขอบขวาเล็กน้อย */
+    top: 50%;           /* 👈 จัดกึ่งกลางแนวตั้ง */
+    transform: translateY(-50%); /* 👈 ช่วยให้กึ่งกลางเป๊ะทุกหน้าจอ */
+    cursor: pointer;
+    font-size: 18px;
+    color: #718096;
+    user-select: none;
+    display: flex;      /* 👈 ช่วยจัดตำแหน่งกรณีเป็นไอคอน SVG */
+    align-items: center;
+    z-index: 10;        /* 👈 มั่นใจว่าอยู่เหนือตัวหนังสือ */
+}
+
+.login-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #4FA8F9;
+    color: white;
+    border: none;
+    border-bottom: 4px solid #3586D1;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-button:active {
+    border-bottom: 0;
+    transform: translateY(2px);
+}
+
+.error-text {
+    color: #E53E3E;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: left;
+    width: 100%;
+    font-weight: 500;
+    display: none; /* ซ่อนไว้ก่อนถ้าไม่มี error */
+}
